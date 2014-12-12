@@ -140,11 +140,10 @@ angular.module('ngFormErrors').service('ngFormErrorsHelper', function() {
 angular.module('ngFormErrors').service('ngFormErrors', function() {
   var DEFAULT_MESSAGES;
   DEFAULT_MESSAGES = {
-    required: 'Wartość wymagana',
-    minlength: 'Wartość jest zbyt krótka',
-    date: 'Data niepoprawna',
-    email: 'Adres e-mail niepoprawny',
-    username: 'Nazwa użytkownika jest zajęta'
+    required: 'Value is required',
+    minlength: 'Value is too short',
+    date: 'Invalid date',
+    email: 'Invalid e-mail address'
   };
   return new ((function() {
     function _Class() {}
