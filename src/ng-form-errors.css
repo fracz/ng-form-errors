@@ -1,0 +1,11 @@
+.form-control.has-error {
+    border-color: #a94442;
+}
+
+ul.input-errors {
+    list-style-type: none;
+    color: #a94442;
+    text-align: center;
+    padding: 5px 0px;
+    margin: 0;
+}

@@ -1,0 +1,5 @@
+<form id="myForm" name="myForm" ng-submit="myFormSubmitted()">
+    <input ng-model="myModel" type="text" name="required" id="required" required ng-minlength="3"
+           validate-field="{minlength: 'MIN'}">
+    <button type="submit" id="submit" validate-form>Submit</button>
+</form>

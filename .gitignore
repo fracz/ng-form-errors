@@ -1,0 +1,5 @@
+node_modules/
+bower_components/
+.idea/*
+!.idea/codeStyleSettings.xml
+test/.compiled
