@@ -4,5 +4,5 @@ angular.module('ngFormErrors')
     findForm: (element) ->
       form = element
       while form.length and form.prop('tagName').toUpperCase() != 'FORM'
-        form = element.parent()
+        form = form.parent()
       if form.length then form else null
