@@ -123,7 +123,7 @@ angular.module('ngFormErrors').service('ngFormErrorsHelper', function() {
       var form;
       form = element;
       while (form.length && form.prop('tagName').toUpperCase() !== 'FORM') {
-        form = element.parent();
+        form = form.parent();
       }
       if (form.length) {
         return form;
