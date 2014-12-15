@@ -22,7 +22,7 @@ angular.module('ngFormErrors').directive('validateForm', ["ngFormErrorsHelper", 
   };
 }]);
 
-angular.module('ngFormErrors').directive('validateField', ["$compile", "$parse", "ngFormErrors", "ngFormErrorsHelper", function($compile, $parse, ngFormErrors, ngFormErrorsHelper) {
+angular.module('ngFormErrors').directive('validateField', ["$compile", "$parse", "ngFormErrors", "ngFormErrorsHelper", "$interpolate", function($compile, $parse, ngFormErrors, ngFormErrorsHelper, $interpolate) {
   var configurationValid, getFieldFullname, getForm, getFormName, showErrorCondition, validateConfiguration;
   getForm = function(element) {
     return ngFormErrorsHelper.findForm(element);
@@ -30,13 +30,15 @@ angular.module('ngFormErrors').directive('validateField', ["$compile", "$parse",
   getFormName = function(element) {
     return getForm(element).attr('name');
   };
-  getFieldFullname = function(element) {
-    return getFormName(element) + '.' + element.attr('name');
+  getFieldFullname = function(element, scope) {
+    var fieldName;
+    fieldName = $interpolate(element.attr('name'));
+    return getFormName(element) + '.' + fieldName(scope);
   };
-  showErrorCondition = function(element) {
+  showErrorCondition = function(element, scope) {
     var field, form, trigger, triggerOnDirty;
     form = getFormName(element);
-    field = getFieldFullname(element);
+    field = getFieldFullname(element, scope);
     triggerOnDirty = element.attr('validate-trigger') ? element.attr('validate-trigger') !== 'submit' : true;
     trigger = "" + form + ".$submitted";
     if (triggerOnDirty) {
@@ -77,8 +79,8 @@ angular.module('ngFormErrors').directive('validateField', ["$compile", "$parse",
       post: function(scope, element, attrs) {
         var errorHtml, field, li, message, messages, showErrorCond, validator, validators;
         if (configurationValid) {
-          field = getFieldFullname(element);
-          showErrorCond = showErrorCondition(element);
+          field = getFieldFullname(element, scope);
+          showErrorCond = showErrorCondition(element, scope);
           if (attrs.validateField) {
             messages = $parse(attrs.validateField)(scope);
           }

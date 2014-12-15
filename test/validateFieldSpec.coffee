@@ -3,7 +3,7 @@ describe "validateField directive", ->
   beforeEach ->
     module 'ngFormErrors'
     fixture('form-with-required-and-minlength')
-    inject ($rootScope, $compile) ->
+    inject ($rootScope, @$compile) ->
       @scope = $rootScope.$new()
       @scope.validatedField = 'someForm.someField'
       @element = $compile($("#myForm"))(@scope)
@@ -33,6 +33,13 @@ describe "validateField directive", ->
     expect($(".input-errors li:visible").length).toBe(0)
 
   it 'should display validation errors on form submit', ->
+    $("#submit").click()
+    expect($(".input-errors li:visible").length).toBe(1)
+
+  it 'should add validators to a field named dynamically', ->
+    @scope.name = 'Dynamic'
+    fixture('form-with-dynamic-field-name')
+    @element = @$compile($("#myForm"))(@scope)
     $("#submit").click()
     expect($(".input-errors li:visible").length).toBe(1)
 

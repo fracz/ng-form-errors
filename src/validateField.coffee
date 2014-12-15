@@ -1,17 +1,18 @@
 angular.module('ngFormErrors')
-.directive 'validateField', ($compile, $parse, ngFormErrors, ngFormErrorsHelper) ->
+.directive 'validateField', ($compile, $parse, ngFormErrors, ngFormErrorsHelper, $interpolate) ->
   getForm = (element) ->
     ngFormErrorsHelper.findForm(element)
 
   getFormName = (element) ->
     getForm(element).attr('name')
 
-  getFieldFullname = (element) ->
-    getFormName(element) + '.' + element.attr('name')
+  getFieldFullname = (element, scope) ->
+    fieldName = $interpolate(element.attr('name'))
+    getFormName(element) + '.' + fieldName(scope)
 
-  showErrorCondition = (element) ->
+  showErrorCondition = (element, scope) ->
     form = getFormName(element)
-    field = getFieldFullname(element)
+    field = getFieldFullname(element, scope)
     triggerOnDirty = if element.attr('validate-trigger') then element.attr('validate-trigger') != 'submit' else yes
     trigger = "#{form}.$submitted"
     if triggerOnDirty
@@ -41,8 +42,8 @@ angular.module('ngFormErrors')
 
     post: (scope, element, attrs) ->
       if configurationValid
-        field = getFieldFullname(element)
-        showErrorCond = showErrorCondition(element)
+        field = getFieldFullname(element, scope)
+        showErrorCond = showErrorCondition(element, scope)
 
         messages = $parse(attrs.validateField)(scope) if attrs.validateField
         errorHtml = angular.element('<ul>').addClass('input-errors')
