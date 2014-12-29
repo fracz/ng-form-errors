@@ -1,20 +1,28 @@
 angular.module('ngFormErrors', []);
 
-angular.module('ngFormErrors').directive('validateForm', ["ngFormErrorsHelper", function(ngFormErrorsHelper) {
+angular.module('ngFormErrors').directive('validateForm', ["ngFormErrorsHelper", "$parse", "$timeout", function(ngFormErrorsHelper, $parse, $timeout) {
   return {
     scope: false,
     restrict: 'A',
     priority: 100,
-    link: function(scope, element) {
+    link: function(scope, element, attrs) {
       var form, formName;
       form = ngFormErrorsHelper.findForm(element);
       form.attr('novalidate', '');
       formName = form.attr('name');
       return element.on('click', function(event) {
         return scope.$apply(function() {
+          var setPristineAfterSubmit;
           scope[formName].$setSubmitted();
           if (scope[formName].$invalid) {
             return event.preventDefault();
+          } else {
+            setPristineAfterSubmit = attrs.validateForm ? $parse(attrs.validateForm)(scope) : true;
+            if (setPristineAfterSubmit) {
+              return $timeout(function() {
+                return scope[formName].$setPristine();
+              });
+            }
           }
         });
       });
